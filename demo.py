@@ -36,8 +36,21 @@ def demo_refresh_token():
     print(token)
 
 
+def demo_call():
+    api = AdeptTechApi(instance=INSTANCE, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_url=REDIRECT_URL,
+                       access_token=ACCESS_TOKEN, refresh_token=REFRESH_TOKEN)
+    resp = api.call('dataset', params={
+        'network': 'google',
+        'object': 'campaign',
+        'filter': '{"condition":"and","rules":[{"name":"status","operator":"equal","value":1}]}',
+        'date': '20_days_up_to_today',
+    })
+    print(resp)
+
+
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG)
-    demo_authorization_url()
+    # demo_authorization_url()
     # demo_token()
     # demo_refresh_token()
+    # demo_call()
