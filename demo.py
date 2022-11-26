@@ -26,14 +26,20 @@ def demo_authorization_url():
 def demo_token():
     api = AdeptTechApi(instance=INSTANCE, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_url=REDIRECT_URL)
     token = api.finish_oauth(code=CODE)
-    print(token)
+    print('Access Token:')
+    print(token['access_token'])
+    print('Refresh Token:')
+    print(token['refresh_token'])
 
 
 def demo_refresh_token():
     api = AdeptTechApi(instance=INSTANCE, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_url=REDIRECT_URL,
                        access_token=ACCESS_TOKEN, refresh_token=REFRESH_TOKEN)
     token = api.refresh_token()
-    print(token)
+    print('Access Token:')
+    print(token['access_token'])
+    print('Refresh Token:')
+    print(token['refresh_token'])
 
 
 def demo_call():

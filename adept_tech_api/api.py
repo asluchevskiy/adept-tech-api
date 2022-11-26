@@ -70,21 +70,6 @@ class AdeptTechApi:
         return token
 
     def refresh_token(self):
-        # $provider = new \League\OAuth2\Client\Provider\GenericProvider([
-        #     'clientId'                => $this->client_id,
-        #     'clientSecret'            => $this->client_secret,
-        #     'redirectUri'             => $this->redirect_url,
-        #     'urlAuthorize'            => str_replace('__INSTANCE__', $this->instance, self::auth_url),
-        #     'urlAccessToken'          => str_replace('__INSTANCE__', $this->instance, self::token_url),
-        #     'urlResourceOwnerDetails' => str_replace('__INSTANCE__', $this->instance, self::user_url),
-        # ]);
-        #
-        # // Try to get an access token using the authorization code grant.
-        # return $provider->getAccessToken('refresh_token', [
-        #     'refresh_token' => $this->refresh_token(),
-        # ]);
-        # todo: in some reason got an error
-        #  unsupported_grant_type: The authorization grant type is not supported by the authorization server.
         new_token = self._provider.refresh_token(self._token_url, refresh_token=self._refresh_token)
         self._access_token = new_token.get('access_token')
         self._refresh_token = new_token.get('refresh_token')
