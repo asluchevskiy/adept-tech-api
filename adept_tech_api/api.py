@@ -56,21 +56,6 @@ class AdeptTechApi:
         return self._scopes
 
     def start_oauth(self, state=None):
-        # $provider = new \League\OAuth2\Client\Provider\GenericProvider([
-        #     'clientId'                => $this->client_id,
-        #     'clientSecret'            => $this->client_secret,
-        #     'redirectUri'             => $this->redirect_url,
-        #     'urlAuthorize'            => str_replace('__INSTANCE__', $this->instance, self::auth_url),
-        #     'urlAccessToken'          => str_replace('__INSTANCE__', $this->instance, self::token_url),
-        #     'urlResourceOwnerDetails' => str_replace('__INSTANCE__', $this->instance, self::user_url),
-        # ]);
-        #
-        # header('Location: '.$provider->getAuthorizationUrl([
-        #         'scope' => implode(' ', $this->scopes),
-        #         'state' => $state !== null ? $state : $provider->getState(),
-        #     ]));
-        # provider = OAuth2Session(client_id=self._client_id, client_secret=self._client_secret,
-        #                          redirect_uri=self._redirect_url)
         authorization_url, provider_state = self._provider.create_authorization_url(
             url=self._auth_url,
             scope=' '.join(self._scopes),
@@ -79,16 +64,6 @@ class AdeptTechApi:
         return authorization_url
 
     def finish_oauth(self, code):
-        # // Try to get an access token using the authorization code grant.
-        # $token               = $provider->getAccessToken('authorization_code', [
-        #     'code' => $code,
-        # ]);
-        # $this->access_token  = $token->getToken();
-        # $this->refresh_token = $token->getRefreshToken();
-        #
-        # return $token;
-        # provider = OAuth2Session(client_id=self._client_id, client_secret=self._client_secret,
-        #                          redirect_uri=self._redirect_url)
         token = self._provider.fetch_token(self._token_url, authorization_response=f'?code={code}')
         self._access_token = token.get('access_token')
         self._refresh_token = token.get('refresh_token')
@@ -110,30 +85,12 @@ class AdeptTechApi:
         # ]);
         # todo: in some reason got an error
         #  unsupported_grant_type: The authorization grant type is not supported by the authorization server.
-        # provider = OAuth2Session(client_id=self._client_id, client_secret=self._client_secret,
-        #                          redirect_uri=self._redirect_url)
         new_token = self._provider.refresh_token(self._token_url, refresh_token=self._refresh_token)
         self._access_token = new_token.get('access_token')
         self._refresh_token = new_token.get('refresh_token')
         return new_token
 
     def call(self, endpoint, method='GET', params=None):
-        # $params['instance'] = $this->instance;
-        # $q = [];
-        # foreach($params as $k => $v) {
-        #     $q[] = $k.'='.urlencode($v);
-        # }
-        # $endpoint = self::base_url.'/'.$endpoint.'?'.implode('&', $q);
-        #
-        # $client = new \GuzzleHttp\Client();
-        # $response = $client->request($method, $endpoint, [
-        #         'headers' => [
-        #             'Authorization' => $this->access_token,
-        #         ],
-        #     ]
-        # );
-        #
-        # return json_decode($response->getBody()->getContents());
         if params is None:
             params = {}
         params['instance'] = self._instance
